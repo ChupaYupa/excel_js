@@ -1,0 +1,30 @@
+{
+  "name": "excel_js",
+  "version": "1.0.0",
+  "description": "Pure JavaScript",
+  "main": "webpack.config.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "webpack",
+    "build": "webpack --mode production"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ChupaYupa/excel_js.git"
+  },
+  "keywords": [
+    "JS",
+    "JavaScript",
+    "Excel"
+  ],
+  "author": "TomaMakarycheva",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ChupaYupa/excel_js/issues"
+  },
+  "homepage": "https://github.com/ChupaYupa/excel_js#readme",
+  "devDependencies": {
+    "webpack": "^5.11.0",
+    "webpack-cli": "^4.2.0"
+  }
+}
