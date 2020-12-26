@@ -32,5 +32,28 @@ module.exports = {
         new MiniCssExtrackPlugin({
             filename: 'bundle.[hash].css'
         })
-    ]
+    ],
+    module: {
+        rules: [
+            {
+                test: /\.s[ac]ss$/i,
+                use: [
+                    MiniCssExtrackPlugin.loader,
+                    'css-loader',
+                    'sass-loader'
+                ],
+            },
+            {
+                test: /\.js$/,
+                exclude: /node_modules/,
+                use: {
+                    loader: 'babel-loader',
+                    options: {
+                        presets: ['@babel/preset-env']
+
+                    }
+                }
+            }
+        ],
+    },
 };
