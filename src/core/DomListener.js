@@ -8,7 +8,6 @@ export class DomListener {
         this.$root = $root
         this.listeners = listeners
     }
-    debugger
     initDomListeners() {
         this.listeners.forEach(listener => {
             const method = getMethodName(listener)
@@ -21,7 +20,6 @@ export class DomListener {
             this.$root.on(listener, this[method])
         })
     }
-    debugger
     removeDomListeners() {
         this.listeners.forEach(listener => {
             const method = getMethodName(listener)

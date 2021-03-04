@@ -3,22 +3,28 @@ const CODES = {
     Z: 90 // Number Z
 }
 function createRow(content, rowNumber) {
+    // eslint-disable-next-line max-len
+    const resize = rowNumber ? '<div class="row-resize" data-resize="row"></div>' : ''
     return `
-    <div class="row">
-    <div class="row-info">${rowNumber ? rowNumber : ''}</div>
+    <div class="row" data-type="resizable">
+    <div class="row-info">
+    ${rowNumber ? rowNumber : ''}
+    ${resize}
+</div>
     <div class="row-data">${content}</div>
 </div>`
 }
 
 // eslint-disable-next-line no-unused-vars
-function createCell(cell) {
+function createCell(_, col) {
     return `
-    <div class="cell" contenteditable>${cell}</div>
+    <div class="cell" contenteditable data-col="${col}"></div>
 `
 }
-function createCol(col) {
+function createCol(col, index) {
     return `
-    <div class="column">${col}</div>`
+    <div class="column" data-type="resizable" data-col="${index}">${col}
+    <div class="col-resize" data-resize="col"></div></div>`
 }
 function toChar(el, index) {
     return String.fromCharCode(CODES.A + index)
