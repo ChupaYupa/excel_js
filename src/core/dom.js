@@ -34,8 +34,24 @@ class Dom {
         }
         return this
     }
+    findAll(selector) {
+        return this.$el.querySelectorAll(selector)
+    }
+    get data() {
+        return this.$el.dataset
+    }
+    // Возвращает ближайщий родительский элемент css-сулектора
+    closest(selector) {
+        return $(this.$el.closest(selector))
+    }
+    // Возвращает размер элемента или его позицию
+    getCoords() {
+        return this.$el.getBoundingClientRect()
+    }
+    css(styles = {}) {
+        Object.keys(styles).forEach(key => this.$el.style[key] = styles[key])
+    }
 }
-// $('div').html('<h1>test</h1>').clear()
 
 // ВОЗВРАЩАЕТ DOM
 export function $(selector) {
@@ -43,8 +59,6 @@ export function $(selector) {
 }
 
 $.create = (tagName, classes='') => {
-    // eslint-disable-next-line no-debugger
-
     const el = document.createElement(tagName)
     if (classes) {
         el.classList.add(classes)

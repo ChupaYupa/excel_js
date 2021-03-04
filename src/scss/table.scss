@@ -15,6 +15,7 @@
     height: $row-height;
   }
   .row-info {
+    position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -28,6 +29,7 @@
     display: flex;
   }
   .column {
+    position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -38,6 +40,33 @@
     border-top: 0;
     border-left: 0;
     height: 100%;
+  }
+
+
+  .col-resize, .row-resize {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    opacity: 0;
+    background: $primary-color;
+    &:hover {
+      opacity: 1;
+      cursor: col-resize;
+    }
+  }
+  .col-resize {
+    top: 0;
+    width: 4px;
+    &:hover {
+      cursor: col-resize;
+    }
+  }
+  .row-resize {
+    left: 0;
+    height: 4px;
+    &:hover {
+      cursor: row-resize;
+    }
   }
   .cell {
     min-width: 40px;
@@ -56,5 +85,6 @@
       z-index: 2;
 
     }
+
   }
 }
