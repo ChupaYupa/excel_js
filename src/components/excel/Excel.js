@@ -1,18 +1,24 @@
 import {$} from "@core/dom";
+import {Emitter} from "@core/Emitter";
 
 export class Excel {
     constructor(selector, options) {
         this.$el = $(selector)
         this.components = options.components || [] // в index.js
+        // eslint-disable-next-line no-undef
+        this.emitter = new Emitter()
     }
     getRoot() {
         const $root = $.create('div', 'excel')
+        const componentOptions = {
+            emitter: this.emitter
+        }
         this.components = this.components.map(Component => {
             const $el = $.create('div', Component.className)
-            const component = new Component($el)
-            if (component.name) {
-                window['c' + component.name] = component
-            }
+            const component = new Component($el, componentOptions)
+            // if (component.name) {
+            //     window['c' + component.name] = component
+            // }
             $el.html(component.toHTML($el))
             $root.append($el)
             return component
@@ -20,7 +26,11 @@ export class Excel {
         return $root
     }
     render() {
-        this.$el.append(this.getRoot());
+        this.$el.append((this.getRoot()))
         this.components.forEach(component => component.init())
+    }
+    destroy() {
+        // this.$el.append(this.getRoot());
+        this.components.forEach(component => component.destroy())
     }
 }
