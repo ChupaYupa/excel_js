@@ -3,8 +3,8 @@ const CODES = {
     Z: 90 // Number Z
 }
 function createRow(content, rowNumber) {
-    // eslint-disable-next-line max-len
-    const resize = rowNumber ? '<div class="row-resize" data-resize="row"></div>' : ''
+    const resize = rowNumber ? '<div class="row-resize" ' +
+        'data-resize="row"></div>' : ''
     return `
     <div class="row" data-type="resizable">
     <div class="row-info">
@@ -14,12 +14,27 @@ function createRow(content, rowNumber) {
     <div class="row-data">${content}</div>
 </div>`
 }
-
-// eslint-disable-next-line no-unused-vars
-function createCell(_, col) {
-    return `
-    <div class="cell" contenteditable data-col="${col}"></div>
+// function createCell(_, col) {
+// return `<div
+//     class="cell"
+//     contenteditable
+//     data-col="${col}"
+//     // data-id="${row}:${col}">
+// </div>
+// `
+// }
+                // OR
+function createCell(row) {
+    return function(_, col) {
+        return `<div 
+    class="cell" 
+    contenteditable 
+    data-col="${col}" 
+    data-type="cell"
+    data-id="${row}:${col}">
+</div>
 `
+    }
 }
 function createCol(col, index) {
     return `
@@ -31,12 +46,8 @@ function toChar(el, index) {
 }
 
 export function createTable(rowsCount = 15) {
-    // eslint-disable-next-line no-debugger
-    debugger
     const colsCount = CODES.Z - CODES.A + 1 // number of columns
     const rows = []
-    console.log(rows)
-    // eslint-disable-next-line no-unused-vars
     const cols = new Array(colsCount)
         .fill('')
         .map(toChar)
@@ -45,8 +56,9 @@ export function createTable(rowsCount = 15) {
     rows.push(createRow(cols))
     for (let i = 0; i < rowsCount; i++) {
         const cells = new Array(colsCount)
+            // .map((_, col) => createCell(row, col))
             .fill('')
-            .map(createCell)
+            .map(createCell(i))
             .join('')
         rows.push(createRow(cells, i+1))
     }
