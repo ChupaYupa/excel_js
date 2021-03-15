@@ -1,32 +1,39 @@
 const CODES = {
-    A: 65,
-    Z: 90
+  A: 65,
+  Z: 90
 }
 
 const DEFAULT_WIDTH = 120
+const DEFAULT_HEIGHT = 24
 
 function getWidth(state, index) {
-    return (state[index] || DEFAULT_WIDTH) + 'px'
+  return (state[index] || DEFAULT_WIDTH) + 'px'
+}
+
+function getHeight(state, index) {
+  return (state[index] || DEFAULT_HEIGHT) + 'px'
 }
 
 function toCell(state, row) {
-    return function(_, col) {
-        const width = getWidth(state.colState, col)
-        return `
+  return function(_, col) {
+    const id = `${row}:${col}`
+    const width = getWidth(state.colState, col)
+    const data = state.dataState[id]
+    return `
       <div 
         class="cell" 
         contenteditable 
         data-col="${col}"
         data-type="cell"
-        data-id="${row}:${col}"
+        data-id="${id}"
         style="width: ${width}"
-      ></div>
+      >${data || ''}</div>
     `
-    }
+  }
 }
 
 function toColumn({col, index, width}) {
-    return `
+  return `
     <div 
       class="column" 
       data-type="resizable" 
@@ -39,11 +46,16 @@ function toColumn({col, index, width}) {
   `
 }
 
-export function createRow(index, content) {
-    const resize = index ? '<div class="row-resize" ' +
-        'data-resize="row"></div>' : ''
-    return `
-    <div class="row" data-type="resizable">
+function createRow(index, content, state = {}) {
+  const resize = index ? '<div class="row-resize" data-resize="row"></div>' : ''
+  const height = getHeight(state, index)
+  return `
+    <div 
+      class="row" 
+      data-type="resizable" 
+      data-row="${index}"
+      style="height: ${height}"
+    >
       <div class="row-info">
         ${index ? index : ''}
         ${resize}
@@ -54,38 +66,38 @@ export function createRow(index, content) {
 }
 
 function toChar(_, index) {
-    return String.fromCharCode(CODES.A + index)
+  return String.fromCharCode(CODES.A + index)
 }
 
 function withWidthFrom(state) {
-    return function(col, index) {
-        return {
-            col, index, width: getWidth(state.colState, index)
-        }
+  return function(col, index) {
+    return {
+      col, index, width: getWidth(state.colState, index)
     }
+  }
 }
 
 export function createTable(rowsCount = 15, state = {}) {
-    const colsCount = CODES.Z - CODES.A + 1 // Compute cols count
-    const rows = []
+  const colsCount = CODES.Z - CODES.A + 1 // Compute cols count
+  const rows = []
 
-    const cols = new Array(colsCount)
+  const cols = new Array(colsCount)
+      .fill('')
+      .map(toChar)
+      .map(withWidthFrom(state))
+      .map(toColumn)
+      .join('')
+
+  rows.push(createRow(null, cols))
+
+  for (let row = 0; row < rowsCount; row++) {
+    const cells = new Array(colsCount)
         .fill('')
-        .map(toChar)
-        .map(withWidthFrom(state))
-        .map(toColumn)
+        .map(toCell(state, row))
         .join('')
 
-    rows.push(createRow(null, cols))
+    rows.push(createRow(row + 1, cells, state.rowState))
+  }
 
-    for (let row = 0; row < rowsCount; row++) {
-        const cells = new Array(colsCount)
-            .fill('')
-            .map(toCell(state, row))
-            .join('')
-
-        rows.push(createRow(row + 1, cells))
-    }
-
-    return rows.join('')
+  return rows.join('')
 }
