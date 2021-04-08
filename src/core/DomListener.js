@@ -10,8 +10,6 @@ export class DomListener {
   }
 
   initDOMListeners() {
-    // eslint-disable-next-line no-debugger
-    debugger
     this.listeners.forEach(listener => {
       const method = getMethodName(listener)
       if (!this[method]) {
@@ -27,8 +25,6 @@ export class DomListener {
   }
 
   removeDOMListeners() {
-    // eslint-disable-next-line no-debugger
-    debugger
     this.listeners.forEach(listener => {
       const method = getMethodName(listener)
       this.$root.off(listener, this[method])

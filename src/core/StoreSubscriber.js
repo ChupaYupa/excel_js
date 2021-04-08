@@ -1,32 +1,32 @@
-import {isEqual} from "@core/utils";
+import {isEqual} from '@core/utils'
 
 export class StoreSubscriber {
-    constructor(store) {
-        this.store = store
-        this.sub = null
-        this.prevState = {}
-    }
-    subscribeComponents(components) {
-        // eslint-disable-next-line no-debugger
-        debugger
-        // eslint-disable-next-line no-debugger
-        debugger
-        this.prevState = this.store.getState()
-        this.sub = this.store.subscribe(state => {
-            Object.keys(state).forEach(key => {
-                if (!isEqual(this.prevState[key], state[key])) {
-                    components.forEach(component => {
-                        if (component.isWatching(key)) {
-                            const change = {[key]: state[key]}
-                            component.storeChanged(change)
-                        }
-                    })
-                }
-                this.prevState = this.store.getState()
-            })
-        })
-    }
-    unsubscribeFromStore() {
-        this.sub.unsubscribe()
-    }
+  constructor(store) {
+    this.store = store
+    this.sub = null
+    this.prevState = {}
+  }
+
+  subscribeComponents(components) {
+    this.prevState = this.store.getState()
+
+    this.sub = this.store.subscribe(state => {
+      Object.keys(state).forEach(key => {
+        if (!isEqual(this.prevState[key], state[key])) {
+          components.forEach(component => {
+            if (component.isWatching(key)) {
+              const changes = {[key]: state[key]}
+              component.storeChanged(changes)
+            }
+          })
+        }
+      })
+
+      this.prevState = this.store.getState()
+    })
+  }
+
+  unsubscribeFromStore() {
+    this.sub.unsubscribe()
+  }
 }
