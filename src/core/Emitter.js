@@ -1,19 +1,22 @@
 export class Emitter {
   constructor() {
-    this.listeners = {}
+    this.listeners = {};
   }
 
   // dispatch, fire, trigger
   // Уведомляем слушателе если они есть
   // table.emit('table:select', {a: 1})
+  // args = [Dom] {$el: div.cell.selected}
   emit(event, ...args) {
+    // eslint-disable-next-line no-debugger
+    debugger;
     if (!Array.isArray(this.listeners[event])) {
-      return false
+      return false;
     }
-    this.listeners[event].forEach(listener => {
-      listener(...args)
-    })
-    return true
+    this.listeners[event].forEach((listener) => {
+      listener(...args);
+    });
+    return true;
   }
 
   // on, listen
@@ -21,12 +24,13 @@ export class Emitter {
   // Добавляем нового слушателя
   // formula.subscribe('table:select', () => {})
   subscribe(event, fn) {
-    this.listeners[event] = this.listeners[event] || []
-    this.listeners[event].push(fn)
+    this.listeners[event] = this.listeners[event] || [];
+    this.listeners[event].push(fn);
     return () => {
-      this.listeners[event] =
-        this.listeners[event].filter(listener => listener !== fn)
-    }
+      this.listeners[event] = this.listeners[event].filter(
+        (listener) => listener !== fn
+      );
+    };
   }
 }
 
