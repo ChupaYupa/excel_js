@@ -1,5 +1,4 @@
 export function parse(value = "") {
-  debugger;
   if (value.startsWith("=")) {
     try {
       return eval(value.slice(1));

@@ -14,7 +14,6 @@ function getAllKeys() {
   const keys = [];
   for (let i = 0; i < localStorage.length; i++) {
     const key = localStorage.key(i);
-    console.log(key);
     if (!key.includes("excel")) {
       continue;
     }
@@ -25,7 +24,6 @@ function getAllKeys() {
 
 export function creacteRocordsTable() {
   const keys = getAllKeys();
-  console.log("keys", keys);
   if (!keys.length) {
     return `<p>вы пока не создали не одной таблицы</p><div class="db__list-header">`;
   }

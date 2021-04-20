@@ -22,12 +22,9 @@ export class Formula extends ExcelComponent {
 
   init() {
     super.init();
-    debugger;
-
     this.$formula = this.$root.find("#formula");
 
     this.$on("table:select", ($cell) => {
-      debugger;
       this.$formula.text($cell.data.value);
     });
   }
